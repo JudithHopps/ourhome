@@ -19,10 +19,13 @@ const S = {
     margin: 70px 0 7px 0;
     text-align: center;
   `,
+
   prodFilter: styled.div`
+    width:95%;
     position:relative,
     padding-bottom: 10px;
     border-bottom: 1px solid #000;
+    max-width: 718px;
   `,
   total: styled.p`
     line-height: 36px;
@@ -36,20 +39,19 @@ const S = {
     right: 0;
   `,
   productListContainer: styled.div`
+    max-width: 718px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    // grid-template-columns: repeat(4, 1fr);
-
-    @media (min-width: 501px) {
-      width: 25%;
-      object-fil: cover;
-    }
-
-    @media (max-width: 500px) {
-      width: 180px;
-      height: 180px;
-    }
+    justify-content: space-evenly;
+    align-items: flex-start;
+  `,
+  centerContainer: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
   `,
 };
 function ProductList() {
@@ -129,30 +131,34 @@ function ProductList() {
   return (
     <S.container>
       <S.title>베스트</S.title>
-      <S.prodFilter>
-        <S.total>
-          {"총 "}
-          <S.listCnt>10</S.listCnt>
-          개의 상품이 있습니다.
-        </S.total>
-      </S.prodFilter>
-      <S.productListContainer>
-        {productList &&
-          productList.map((item) => (
-            <ItemComponent
-              key={item.id}
-              id={item.id}
-              itemTitle={item.itemTitle}
-              imgUrl={item.imgUrl}
-              itemSubtitle={item.itemSubtitle}
-              price={item.price}
-              sale={item.sale}
-              option={item.option}
-              onHover={true}
-              saveItem={saveItem}
-            />
-          ))}
-      </S.productListContainer>
+      <S.centerContainer>
+        <S.prodFilter>
+          <S.total>
+            {"총 "}
+            <S.listCnt>10</S.listCnt>
+            개의 상품이 있습니다.
+          </S.total>
+        </S.prodFilter>
+      </S.centerContainer>
+      <S.centerContainer>
+        <S.productListContainer>
+          {productList &&
+            productList.map((item) => (
+              <ItemComponent
+                key={item.id}
+                id={item.id}
+                itemTitle={item.itemTitle}
+                imgUrl={item.imgUrl}
+                itemSubtitle={item.itemSubtitle}
+                price={item.price}
+                sale={item.sale}
+                option={item.option}
+                onHover={true}
+                saveItem={saveItem}
+              />
+            ))}
+        </S.productListContainer>
+      </S.centerContainer>
     </S.container>
   );
 }

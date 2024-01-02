@@ -22,30 +22,39 @@ const S = {
   container: styled.div`
     flex-shrink: 0;
     padding-top: 20px;
-    padding-bottom: 18px;
-    width: 100%;
+    width: 10rem;
+    height: 180%;
     position: relative;
   `,
 
   li: styled.h1`
     margin-bottom: 10px;
     color: #000;
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 600;
   `,
   itemTitle: styled.p`
-    font-size: 17px;
+    font-size: 1.1rem;
     font-weight: 400;
+    max-height: 1.4rem;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 2px;
   `,
   itemSubTitle: styled.p`
+    display: block;
     margin-top: 2px;
     color: #888;
-    font-size: 14px;
+    width: 100%;
+    max-height: 1rem;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   `,
   imgContainer: styled.div`
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 10rem;
+    height: 10rem;
   `,
   PriceContainer: styled.div`
     margin-top: 10px;
@@ -55,14 +64,14 @@ const S = {
     align-items: flex-end;
   `,
   Price: styled.span`
-    font-size: 26px;
+    font-size: 1rem;
     line-height: 1;
     font-weight: 600;
   `,
   OriPrice: styled.del`
     margin-left: 3px;
     color: #666;
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 500;
     line-height: 1;
     text-decoration: line-through;
@@ -70,12 +79,12 @@ const S = {
   sale: styled.em`
     margin-left: 3px;
     color: #ff6500;
-    font-size: 16px;
+    font-size: 0.8rem;
     font-weight: 600;
     line-height: 1;
   `,
   option: styled.span<OptionProps>`
-    font-size: 14px;
+    font-size: 0.8rem;
     color: #666;
 
     ${(props) =>
@@ -116,7 +125,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({
           alt={itemTitle}
           style={{ border: "1px solid #eee" }}
         />
-        {onHover && (
+        {/* {onHover && (
           <Image
             src={cartIcon}
             alt="cartIcon"
@@ -130,7 +139,7 @@ const ItemComponent: React.FC<ItemComponentProps> = ({
             }}
             onClick={() => saveItem(id)}
           />
-        )}
+        )} */}
       </S.imgContainer>
       <S.itemTitle>{itemTitle}</S.itemTitle>
       <S.itemSubTitle>{itemSubtitle}</S.itemSubTitle>
