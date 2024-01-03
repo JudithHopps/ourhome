@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { productListType } from "type/productListType";
 import { fetchProductList } from "../../lib/api/api";
@@ -205,7 +205,7 @@ const THE_DELIVERY_CHARGE = 3000;
 
 export default function ShoppingBasket() {
   const [cartList, setCartList] = useState<CartType[] | null>(null);
-  const [cost, setCost] = useState<number>(0);
+  // const [cost, setCost] = useState<number>(0);
 
   useEffect(() => {
     const preCartList = localStorage.getItem("cartList");
@@ -214,12 +214,12 @@ export default function ShoppingBasket() {
     }
   }, []);
 
-  useEffect(() => {
-    const sumCost =
-      cartList &&
-      cartList.reduce((acc, item) => acc + item.price * item.count, 0);
-    if (sumCost) setCost(sumCost);
-  }, [cartList]);
+  // useEffect(() => {
+  //   const sumCost =
+  //     cartList &&
+  //     cartList.reduce((acc, item) => acc + item.price * item.count, 0);
+  //   if (sumCost) setCost(sumCost);
+  // }, [cartList]);
 
   const updateCartList = (newCartList: CartType[]): void => {
     setCartList(newCartList);
@@ -239,6 +239,14 @@ export default function ShoppingBasket() {
       updateCartList(newCartList);
     }
   };
+
+  const totalCost = useMemo(() => {
+    return (
+      (cartList &&
+        cartList.reduce((acc, item) => acc + item.price * item.count, 0)) ||
+      0
+    );
+  }, [cartList]);
 
   return (
     <S.container>
@@ -303,17 +311,17 @@ export default function ShoppingBasket() {
             <S.th colspan={4}>
               <S.footContainer>
                 <S.text>총 금액</S.text>
-                <S.boldText>{cost}원</S.boldText>
+                <S.boldText>{totalCost}원</S.boldText>
                 <S.symbol>+</S.symbol>
                 <S.text>배송비</S.text>
                 <S.boldText>
-                  {cost >= 30000 ? 0 : THE_DELIVERY_CHARGE}원
+                  {totalCost >= 30000 ? 0 : THE_DELIVERY_CHARGE}원
                 </S.boldText>
                 <S.text2>{"(3만원이상 구매시 무료배송)"}</S.text2>
                 <S.symbol>=</S.symbol>
                 <S.text>결제 금액</S.text>
                 <S.boldText>
-                  {cost + (cost >= 30000 ? 0 : THE_DELIVERY_CHARGE)}원
+                  {totalCost + (totalCost >= 30000 ? 0 : THE_DELIVERY_CHARGE)}원
                 </S.boldText>
               </S.footContainer>
             </S.th>
