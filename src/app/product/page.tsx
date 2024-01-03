@@ -1,21 +1,21 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import ItemComponent from "../../../component/product/ItemComponent";
-import styled, { css } from "styled-components";
-import { productListType } from "type/productListType";
-import { fetchProductList } from "../lib/api/api";
-import HeaderComponent from "component/common/Header";
-import Modal from "component/common/ModalComponent";
-import Link from "next/link";
-import ButtonComponent from "component/common/Button";
+'use client'
+import React, { useState, useEffect } from 'react'
+import ItemComponent from '../../../component/product/ItemComponent'
+import styled, { css } from 'styled-components'
+import { productListType } from 'type/productListType'
+import { fetchProductList } from '../lib/api/api'
+import HeaderComponent from 'component/common/Header'
+import Modal from 'component/common/ModalComponent'
+import Link from 'next/link'
+import ButtonComponent from 'component/common/Button'
 interface CartType {
-  id: string;
-  itemTitle: string;
-  imgUrl: string;
-  price: number;
-  oriPrice: number;
-  sale: number;
-  count: number;
+  id: string
+  itemTitle: string
+  imgUrl: string
+  price: number
+  oriPrice: number
+  sale: number
+  count: number
 }
 
 const S = {
@@ -105,62 +105,64 @@ const S = {
       display: none;
     }
   `,
-};
+  buttonText: styled.p`
+    color: while;
+    font-size: 1vw;
+  `,
+}
 
 export default function ProductList() {
-  const [productList, setProductList] = useState<productListType[] | null>(
-    null,
-  );
-  const [cartList, setCartList] = useState<CartType[] | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [productList, setProductList] = useState<productListType[] | null>(null)
+  const [cartList, setCartList] = useState<CartType[] | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchData = async () => {
-      const localProductList = localStorage.getItem("productList");
+      const localProductList = localStorage.getItem('productList')
 
       if (!localProductList) {
         try {
-          const result = await fetchProductList();
-          localStorage.setItem("productList", JSON.stringify(result));
-          setProductList(result);
+          const result = await fetchProductList()
+          localStorage.setItem('productList', JSON.stringify(result))
+          setProductList(result)
         } catch (error) {
-          console.error("Error fetching product list:", error);
+          console.error('Error fetching product list:', error)
         }
       } else {
-        setProductList(JSON.parse(localProductList));
+        setProductList(JSON.parse(localProductList))
       }
 
-      const preCartList = localStorage.getItem("cartList");
+      const preCartList = localStorage.getItem('cartList')
       if (preCartList) {
-        setCartList(JSON.parse(preCartList));
+        setCartList(JSON.parse(preCartList))
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const updateCartList = (newCartList: CartType[]): void => {
-    setCartList(newCartList);
-    localStorage.setItem("cartList", JSON.stringify(newCartList));
-    setIsModalOpen(true);
-  };
+    setCartList(newCartList)
+    localStorage.setItem('cartList', JSON.stringify(newCartList))
+    setIsModalOpen(true)
+  }
 
   const isItemInCart = (id: string) => {
-    const isItemInCart = cartList && cartList.some((item) => item.id === id);
-    return isItemInCart;
-  };
+    const isItemInCart = cartList && cartList.some((item) => item.id === id)
+    return isItemInCart
+  }
   const getPrice = (product: productListType): number => {
     return (
       Math.round((product.price - product.price * (product.sale / 100)) / 10) *
       10
-    );
-  };
+    )
+  }
 
   const createCartList = (id: string): void => {
     const matchingProduct =
-      productList && productList.find((product) => product.id === id);
+      productList && productList.find((product) => product.id === id)
     if (matchingProduct) {
-      const discountedPrice: number = getPrice(matchingProduct);
+      const discountedPrice: number = getPrice(matchingProduct)
 
       const newCartList: CartType[] = [
         {
@@ -172,27 +174,27 @@ export default function ProductList() {
           sale: matchingProduct?.sale,
           count: 1,
         },
-      ];
-      updateCartList(newCartList);
+      ]
+      updateCartList(newCartList)
     }
-  };
+  }
 
   const saveItem = (id: string): void => {
     if (cartList === null) {
-      createCartList(id);
+      createCartList(id)
     } else if (isItemInCart(id)) {
       const newCartList = cartList.map((item) => {
         if (item.id == id) {
-          return { ...item, count: item.count + 1 };
+          return { ...item, count: item.count + 1 }
         }
-        return item;
-      });
-      updateCartList(newCartList);
+        return item
+      })
+      updateCartList(newCartList)
     } else {
       const matchingProduct =
-        productList && productList.find((product) => product.id === id);
+        productList && productList.find((product) => product.id === id)
       if (matchingProduct) {
-        const discountedPrice: number = getPrice(matchingProduct);
+        const discountedPrice: number = getPrice(matchingProduct)
 
         const newCartList: CartType[] = [
           ...cartList,
@@ -205,13 +207,13 @@ export default function ProductList() {
             sale: matchingProduct.sale,
             count: 1,
           },
-        ];
-        updateCartList(newCartList);
+        ]
+        updateCartList(newCartList)
       } else {
-        alert("오류가 발생하였습니다.");
+        alert('오류가 발생하였습니다.')
       }
     }
-  };
+  }
 
   return (
     <S.container>
@@ -220,7 +222,7 @@ export default function ProductList() {
       <S.centerContainer>
         <S.prodFilter>
           <S.total>
-            {"총 "}
+            {'총 '}
             <S.listCnt>20</S.listCnt>
             개의 상품이 있습니다.
           </S.total>
@@ -261,16 +263,17 @@ export default function ProductList() {
               <S.margin height={25}></S.margin>
               <S.depthContainer>
                 <Link href="/mypage/shoppingBasket">
-                  <ButtonComponent importance="low" width="12vw">
-                    장바구니 확인하기
+                  <ButtonComponent importance="low" width="12vw" height={'3vh'}>
+                    <S.buttonText>장바구니 확인하기</S.buttonText>
                   </ButtonComponent>
                 </Link>
                 <ButtonComponent
                   importance="high"
                   onClick={() => setIsModalOpen(false)}
                   width="12vw"
+                  height={'3vh'}
                 >
-                  계속 쇼핑하기
+                  <S.buttonText>계속 쇼핑하기</S.buttonText>
                 </ButtonComponent>
               </S.depthContainer>
             </S.centerContainer>
@@ -278,5 +281,5 @@ export default function ProductList() {
         )}
       </S.WebViewComponent>
     </S.container>
-  );
+  )
 }
