@@ -236,6 +236,7 @@ export default function ProductList() {
               />
             ))}
         </S.productListContainer>
+        <S.margin height={80} />
       </S.centerContainer>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>

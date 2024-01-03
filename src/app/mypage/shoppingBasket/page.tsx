@@ -271,7 +271,6 @@ export default function ShoppingBasket() {
       ) : (
         <S.table>
           <S.caption>
-            {/* <S.tablist> */}
             <S.tabListText>
               <S.boldText>일반배송</S.boldText>
               <S.DeliveryContainer>
@@ -285,7 +284,6 @@ export default function ShoppingBasket() {
                 </S.progressBarContainer>
               </S.DeliveryContainer>
             </S.tabListText>
-            {/* </S.tablist> */}
           </S.caption>
           <S.thead>
             <S.tr>

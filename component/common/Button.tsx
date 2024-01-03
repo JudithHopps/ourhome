@@ -27,7 +27,7 @@ const S = {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center; /* Center the text vertically */
+    align-items: center;
     padding: 10px 20px;
     background-color: ${(props) => getButtonColor(props.importance)};
     ${(props) => props.width && `width: ${props.width}px;`}
