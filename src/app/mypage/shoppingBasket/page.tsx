@@ -218,10 +218,11 @@ const S = {
   progress: styled.div<{ width: number }>`
     height: 100%;
     background-color: #ff6500;
-    width: calc(100% - ${(props) => props.width}%);
+    width: ${(props) => props.width}%;
     transition: width 0.3s ease-in-out;
   `,
 };
+const THE_FREE_SHIPPING_MINIMUM_AMOUNT = 30000;
 const THE_DELIVERY_CHARGE = 3000;
 
 export default function ShoppingBasket() {
@@ -243,7 +244,7 @@ export default function ShoppingBasket() {
     const newCartList =
       cartList &&
       cartList.map((item) => {
-        if (item.id == id) {
+        if (item.id == id && item.count + add > 0) {
           return { ...item, count: item.count + add };
         }
         return item;
@@ -275,12 +276,14 @@ export default function ShoppingBasket() {
               <S.boldText>일반배송</S.boldText>
               <S.DeliveryContainer>
                 {totalCost < 30000 ? (
-                  <S.text2>{30000 - totalCost} 추가시 무료배송</S.text2>
+                  <S.text2>{30000 - totalCost}원 추가시 무료배송</S.text2>
                 ) : (
                   <S.text2>무료배송</S.text2>
                 )}
                 <S.progressBarContainer>
-                  <S.progress width={80} />
+                  <S.progress
+                    width={(totalCost / THE_FREE_SHIPPING_MINIMUM_AMOUNT) * 100}
+                  />
                 </S.progressBarContainer>
               </S.DeliveryContainer>
             </S.tabListText>
