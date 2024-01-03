@@ -4,6 +4,7 @@ import ItemComponent from "../../../component/product/ItemComponent";
 import styled, { css } from "styled-components";
 import { productListType } from "type/productListType";
 import { fetchProductList } from "../lib/api/api";
+import HeaderComponent from "component/common/Header";
 
 interface CartType {
   id: string;
@@ -164,6 +165,7 @@ export default function ProductList() {
 
   return (
     <S.container>
+      <HeaderComponent />
       <S.title>베스트</S.title>
       <S.centerContainer>
         <S.prodFilter>

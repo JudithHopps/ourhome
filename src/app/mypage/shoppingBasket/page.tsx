@@ -5,6 +5,7 @@ import DescriptionComponent from "component/ShoppingBasket/EmptyCart";
 import Image from "next/image";
 import plusIcon from "../../../../public/img/plusIcon.jpeg";
 import minusIcon from "../../../../public/img/minusIcon.jpeg";
+import HeaderComponent from "component/common/Header";
 interface CartType {
   id: string;
   itemTitle: string;
@@ -160,19 +161,19 @@ const S = {
     flex-direction: row;
     text-align: center;
     border-bottom: 0;
-    padding: 20px;
+    padding: 3px;
     flex-wrap: nowrap;
   `,
   text: styled.span`
     margin-right: 10px;
     font-weight: 400;
-    font-size: 1.6vw;
+    font-size: 1.2vw;
     flex-wrap: nowrap;
   `,
   boldText: styled.span`
     font-size: 1.6vw;
     font-weight: 600;
-    width: 10vw;
+    width: 8vw;
     flex-shrink: 0;
     text-align: end;
     flex-wrap: nowrap;
@@ -262,6 +263,7 @@ export default function ShoppingBasket() {
 
   return (
     <S.container>
+      <HeaderComponent />
       <S.title>장바구니</S.title>
       <S.pageNav> {"Home > 장바구니"}</S.pageNav>
       {!cartList || cartList.length == 0 ? (
