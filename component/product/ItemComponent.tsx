@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import styled, { css } from "styled-components";
-import cartIcon from "../public/img/cartIcon.png";
+import cartIcon from "../../public/img/cartIcon.png";
 interface ItemComponentProps {
   id: string;
   imgUrl: string;
@@ -125,21 +125,21 @@ const ItemComponent: React.FC<ItemComponentProps> = ({
           alt={itemTitle}
           style={{ border: "1px solid #eee" }}
         />
-        {/* {onHover && (
+        {onHover && (
           <Image
             src={cartIcon}
             alt="cartIcon"
-            width={100}
+            width={120}
             height={45}
             style={{
               position: "absolute",
-              left: 40,
+              left: 25,
               bottom: 20,
               zIndex: 2,
             }}
             onClick={() => saveItem(id)}
           />
-        )} */}
+        )}
       </S.imgContainer>
       <S.itemTitle>{itemTitle}</S.itemTitle>
       <S.itemSubTitle>{itemSubtitle}</S.itemSubTitle>
