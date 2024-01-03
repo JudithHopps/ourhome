@@ -80,11 +80,16 @@ const S = {
   `,
 
   tfoot: styled.tfoot`
-    background-color: #fafafa; /* 바닥글 배경색 회색으로 설정 */
-    display: block;
+    display: flex;
+    background-color: #fafafa;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 4rem;
+    padding: 15px;
     text-align: center;
+    th {
+      display: table-footer-group;
+    }
   `,
   Price: styled.span`
     font-size: 1rem;
@@ -165,79 +170,74 @@ const S = {
     border-left: 1px solid #e0e0e0;
     border-right: 1px solid #e0e0e0;
   `,
+  footContainer: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    border-bottom: 0;
+    padding: 20px;
+  `,
+  text: styled.span`
+    margin-right: 10px;
+    font-weight: 400;
+  `,
+  boldText: styled.span`
+    font-size: 22px;
+    font-weight: 600;
+    width: 100px;
+    text-align: end;
+  `,
+  text2: styled.span`
+    color: #888;
+    font-size: 13px;
+    font-weight: 400;
+    padding-left: 3px;
+  `,
+  symbol: styled.span`
+    padding: 0px 30px;
+    font-size: 27px;
+    color: #b5b5b5;
+  `,
 };
+const THE_DELIVERY_CHARGE = 3000;
+
 export default function ShoppingBasket() {
-  const [productList, setProductList] = useState<productListType[] | null>(
-    null,
-  );
   const [cartList, setCartList] = useState<CartType[] | null>(null);
+  const [cost, setCost] = useState<number>(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const localProductList = localStorage.getItem("productList");
-
-      if (!localProductList) {
-        try {
-          const result = await fetchProductList();
-          localStorage.setItem("productList", JSON.stringify(result));
-          setProductList(result);
-        } catch (error) {
-          console.error("Error fetching product list:", error);
-        }
-      } else {
-        setProductList(JSON.parse(localProductList));
-      }
-
-      const preCartList = localStorage.getItem("cartList");
-      if (preCartList) {
-        setCartList(JSON.parse(preCartList));
-      }
-    };
-
-    fetchData();
+    const preCartList = localStorage.getItem("cartList");
+    if (preCartList) {
+      setCartList(JSON.parse(preCartList));
+    }
   }, []);
 
-  const isItemInCart = (id: string) => {
-    const isItemInCart = cartList && cartList.some((item) => item.id === id);
-    return isItemInCart;
-  };
-
-  // const createCartList = (id: string): void => {
-  //   const newCartList: CartType[] = [
-  //     {
-  //       id: id,
-  //       count: 1,
-  //     },
-  //   ];
-  //   updateCartList(newCartList);
-  // };
-
-  // const saveItem = (id: string): void => {
-  //   if (cartList === null) {
-  //     createCartList(id);
-  //   } else if (isItemInCart(id)) {
-  //     const newCartList = cartList.map((item) => {
-  //       if (item.id == id) {
-  //         return { ...item, count: item.count + 1 };
-  //       }
-  //       return item;
-  //     });
-  //     updateCartList(newCartList);
-  //   } else {
-  //     const newCartList = [
-  //       ...cartList,
-  //       {
-  //         id: id,
-  //         count: 1,
-  //       },
-  //     ];
-  //     updateCartList(newCartList);
-  //   }
-  // };
+  useEffect(() => {
+    const sumCost =
+      cartList &&
+      cartList.reduce((acc, item) => acc + item.price * item.count, 0);
+    if (sumCost) setCost(sumCost);
+  }, [cartList]);
 
   const updateCartList = (newCartList: CartType[]): void => {
     setCartList(newCartList);
     localStorage.setItem("cartList", JSON.stringify(newCartList));
+  };
+
+  const changeCount = (id: string, add: number) => {
+    const newCartList =
+      cartList &&
+      cartList.map((item) => {
+        if (item.id == id) {
+          return { ...item, count: item.count + add };
+        }
+        return item;
+      });
+    if (newCartList) {
+      updateCartList(newCartList);
+    }
   };
 
   return (
@@ -275,12 +275,12 @@ export default function ShoppingBasket() {
                 <S.th>
                   <S.priceContainer>
                     <S.Price>{item.price}원</S.Price>
-                    <S.OriPrice>{item.price}원</S.OriPrice>
+                    <S.OriPrice>{item.oriPrice}원</S.OriPrice>
                   </S.priceContainer>
                 </S.th>
                 <S.th>
                   <S.countContainer>
-                    <S.countButton>
+                    <S.countButton onClick={() => changeCount(item.id, -1)}>
                       <Image
                         src={minusIcon}
                         width={24}
@@ -289,18 +289,34 @@ export default function ShoppingBasket() {
                       ></Image>
                     </S.countButton>
                     <S.count>{item.count}</S.count>
-                    <S.countButton>
+                    <S.countButton onClick={() => changeCount(item.id, 1)}>
                       <Image src={plusIcon} width={24} alt={"수량증가"}></Image>
                     </S.countButton>
                   </S.countContainer>
                 </S.th>
-                <S.th>{item.price * item.count}</S.th>
+                <S.th>{item.price * item.count}원</S.th>
               </S.tr>
             ))}
           </S.tbody>
 
           <S.tfoot>
-            <S.th colspan={4}> 총 금액 </S.th>
+            <S.th colspan={4}>
+              <S.footContainer>
+                <S.text>총 금액</S.text>
+                <S.boldText>{cost}원</S.boldText>
+                <S.symbol>+</S.symbol>
+                <S.text>배송비</S.text>
+                <S.boldText>
+                  {cost >= 30000 ? 0 : THE_DELIVERY_CHARGE}원
+                </S.boldText>
+                <S.text2>{"(3만원이상 구매시 무료배송)"}</S.text2>
+                <S.symbol>=</S.symbol>
+                <S.text>결제 금액</S.text>
+                <S.boldText>
+                  {cost + (cost >= 30000 ? 0 : THE_DELIVERY_CHARGE)}원
+                </S.boldText>
+              </S.footContainer>
+            </S.th>
           </S.tfoot>
         </S.table>
       )}

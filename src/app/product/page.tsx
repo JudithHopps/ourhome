@@ -91,21 +91,34 @@ export default function ProductList() {
     fetchData();
   }, []);
 
+  const updateCartList = (newCartList: CartType[]): void => {
+    setCartList(newCartList);
+    localStorage.setItem("cartList", JSON.stringify(newCartList));
+  };
+
   const isItemInCart = (id: string) => {
     const isItemInCart = cartList && cartList.some((item) => item.id === id);
     return isItemInCart;
+  };
+  const getPrice = (product: productListType): number => {
+    return (
+      Math.round((product.price - product.price * (product.sale / 100)) / 10) *
+      10
+    );
   };
 
   const createCartList = (id: string): void => {
     const matchingProduct =
       productList && productList.find((product) => product.id === id);
     if (matchingProduct) {
+      const discountedPrice: number = getPrice(matchingProduct);
+
       const newCartList: CartType[] = [
         {
           id: id,
           itemTitle: matchingProduct.itemTitle,
           imgUrl: matchingProduct?.imgUrl,
-          price: matchingProduct?.price,
+          price: discountedPrice,
           oriPrice: matchingProduct?.price,
           sale: matchingProduct?.sale,
           count: 1,
@@ -130,13 +143,15 @@ export default function ProductList() {
       const matchingProduct =
         productList && productList.find((product) => product.id === id);
       if (matchingProduct) {
+        const discountedPrice: number = getPrice(matchingProduct);
+
         const newCartList: CartType[] = [
           ...cartList,
           {
             id: id,
             itemTitle: matchingProduct.itemTitle,
             imgUrl: matchingProduct.imgUrl,
-            price: matchingProduct.price,
+            price: discountedPrice,
             oriPrice: matchingProduct.price,
             sale: matchingProduct.sale,
             count: 1,
@@ -145,11 +160,6 @@ export default function ProductList() {
         updateCartList(newCartList);
       }
     }
-  };
-
-  const updateCartList = (newCartList: CartType[]): void => {
-    setCartList(newCartList);
-    localStorage.setItem("cartList", JSON.stringify(newCartList));
   };
 
   return (
