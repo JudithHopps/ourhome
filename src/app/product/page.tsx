@@ -5,7 +5,9 @@ import styled, { css } from "styled-components";
 import { productListType } from "type/productListType";
 import { fetchProductList } from "../lib/api/api";
 import HeaderComponent from "component/common/Header";
-
+import Modal from "component/common/ModalComponent";
+import Link from "next/link";
+import ButtonComponent from "component/common/Button";
 interface CartType {
   id: string;
   itemTitle: string;
@@ -25,7 +27,14 @@ const S = {
     margin: 70px 0 7px 0;
     text-align: center;
   `,
-
+  boldText: styled.span`
+    font-size: 1.6vw;
+    font-weight: 600;
+    width: 8vw;
+    flex-shrink: 0;
+    text-align: end;
+    flex-wrap: nowrap;
+  `,
   prodFilter: styled.div`
     width:95%;
     position:relative,
@@ -54,10 +63,41 @@ const S = {
   `,
   centerContainer: styled.div`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
+  `,
+  text2: styled.span`
+    color: #888;
+    font-size: 1vw;
+    font-weight: 400;
+    padding-left: 3px;
+  `,
+  text: styled.span`
+    margin-right: 10px;
+    font-weight: 400;
+    font-size: 1.2vw;
+    flex-wrap: nowrap;
+  `,
+  modalHeader: styled.header`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 20px;
+    padding-bottom: 10px;
+  `,
+  margin: styled.div<{ width?: number; height?: number }>`
+    ${(props) => props.width && `width : ${props.width}px;`}
+    ${(props) => props.height && `height:${props.height}px;`}
+  `,
+  depthContainer: styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
   `,
 };
 
@@ -66,6 +106,7 @@ export default function ProductList() {
     null,
   );
   const [cartList, setCartList] = useState<CartType[] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +136,7 @@ export default function ProductList() {
   const updateCartList = (newCartList: CartType[]): void => {
     setCartList(newCartList);
     localStorage.setItem("cartList", JSON.stringify(newCartList));
+    setIsModalOpen(true);
   };
 
   const isItemInCart = (id: string) => {
@@ -195,6 +237,34 @@ export default function ProductList() {
             ))}
         </S.productListContainer>
       </S.centerContainer>
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <S.centerContainer>
+            <S.modalHeader>
+              <S.boldText>장바구니</S.boldText>
+              <S.text onClick={() => setIsModalOpen(false)}>X</S.text>
+            </S.modalHeader>
+            <S.prodFilter></S.prodFilter>
+            <S.margin height={25}></S.margin>
+            <S.text>선택한 상품이 장바구니에 담겼습니다.</S.text>
+            <S.text2>장바구니로 이동하겠습니까?</S.text2>
+            <S.margin height={25}></S.margin>
+            <S.depthContainer>
+              <Link href="/mypage/shoppingBasket">
+                <ButtonComponent importance="low">
+                  장바구니 확인하기
+                </ButtonComponent>
+              </Link>
+              <ButtonComponent
+                importance="high"
+                onClick={() => setIsModalOpen(false)}
+              >
+                계속 쇼핑하기
+              </ButtonComponent>
+            </S.depthContainer>
+          </S.centerContainer>
+        </Modal>
+      )}
     </S.container>
   );
 }
