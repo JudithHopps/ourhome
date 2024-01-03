@@ -97,7 +97,8 @@ const S = {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 70%;
+    width: 100%;
+    padding: 0px 3vw;
   `,
 };
 
@@ -252,13 +253,14 @@ export default function ProductList() {
             <S.margin height={25}></S.margin>
             <S.depthContainer>
               <Link href="/mypage/shoppingBasket">
-                <ButtonComponent importance="low">
+                <ButtonComponent importance="low" width="12vw">
                   장바구니 확인하기
                 </ButtonComponent>
               </Link>
               <ButtonComponent
                 importance="high"
                 onClick={() => setIsModalOpen(false)}
+                width="12vw"
               >
                 계속 쇼핑하기
               </ButtonComponent>

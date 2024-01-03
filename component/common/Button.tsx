@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface ButtonComponentProps {
   children: ReactNode;
   importance?: "high" | "medium" | "low";
-  width?: number;
+  width?: string;
   height?: number;
   onClick?: () => void;
 }
@@ -30,7 +30,7 @@ const S = {
     align-items: center;
     padding: 10px 20px;
     background-color: ${(props) => getButtonColor(props.importance)};
-    ${(props) => props.width && `width: ${props.width}px;`}
+    ${(props) => props.width && `width: ${props.width};`}
     ${(props) => props.height && `height: ${props.height}px;`}
     color: white;
     text-align: center;

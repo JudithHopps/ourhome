@@ -15,7 +15,7 @@ const ModalWrapper = styled.div`
   padding: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 30vw;
+  width: 35vw;
 `;
 
 const Overlay = styled.div`
