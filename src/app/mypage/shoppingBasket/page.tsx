@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
-import styled, { css } from "styled-components";
-import { productListType } from "type/productListType";
-import { fetchProductList } from "../../lib/api/api";
+import styled from "styled-components";
 import DescriptionComponent from "component/ShoppingBasket/EmptyCart";
 import Image from "next/image";
 import plusIcon from "../../../../public/img/plusIcon.jpeg";
@@ -91,26 +89,19 @@ const S = {
     }
   `,
   Price: styled.span`
-    font-size: 1.8vw;
+    font-size: 1.3vw;
     line-height: 1;
     font-weight: 600;
   `,
   OriPrice: styled.del`
     margin-top: 8px;
     color: #666;
-    font-size: 1.5vw;
+    font-size: 1.1vw;
     font-weight: 500;
     line-height: 1;
     text-decoration: line-through;
   `,
 
-  prodFilter: styled.div`
-    width:95%;
-    position:relative,
-    padding-bottom: 10px;
-    border-bottom: 1px solid #000;
-    max-width: 718px;
-  `,
   total: styled.p`
     line-height: 36px;
   `,
@@ -134,13 +125,6 @@ const S = {
     gap: 20px;
     justify-content: space-evenly;
     align-items: flex-start;
-  `,
-  centerContainer: styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
   `,
   productName: styled.p`
     padding-left: 22px;
@@ -186,9 +170,9 @@ const S = {
     flex-wrap: nowrap;
   `,
   boldText: styled.span`
-    font-size: 3vw;
+    font-size: 1.6vw;
     font-weight: 600;
-    width: 13vw;
+    width: 10vw;
     flex-shrink: 0;
     text-align: end;
     flex-wrap: nowrap;
