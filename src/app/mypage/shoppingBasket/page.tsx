@@ -66,7 +66,6 @@ const S = {
   th: styled.th<{ colspan?: number }>`
     padding: 13px;
     font-size: 1rem;
-    // text-align: center;
     display: flex;
     align-items: center;
     ${(props) => props.colspan && `grid-column: span ${props.colspan};`}
@@ -200,12 +199,43 @@ const S = {
     font-size: 27px;
     color: #b5b5b5;
   `,
+  tablist: styled.div`
+    display: flex;
+    flex-direction: column;
+  `,
+  tabListText: styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  `,
+  DeliveryContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0px 10px;
+  `,
+  progressBarContainer: styled.div`
+    width: 300px;
+    height: 20px;
+    border: 1px solid #ccc;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-basis: start;
+    border-radius: 10px;
+    background-color: #fdecd9;
+  `,
+  progress: styled.div<{ width: number }>`
+    height: 100%;
+    background-color: #ff6500;
+    width: calc(100% - ${(props) => props.width}%);
+    transition: width 0.3s ease-in-out;
+  `,
 };
 const THE_DELIVERY_CHARGE = 3000;
 
 export default function ShoppingBasket() {
   const [cartList, setCartList] = useState<CartType[] | null>(null);
-  // const [cost, setCost] = useState<number>(0);
 
   useEffect(() => {
     const preCartList = localStorage.getItem("cartList");
@@ -213,13 +243,6 @@ export default function ShoppingBasket() {
       setCartList(JSON.parse(preCartList));
     }
   }, []);
-
-  // useEffect(() => {
-  //   const sumCost =
-  //     cartList &&
-  //     cartList.reduce((acc, item) => acc + item.price * item.count, 0);
-  //   if (sumCost) setCost(sumCost);
-  // }, [cartList]);
 
   const updateCartList = (newCartList: CartType[]): void => {
     setCartList(newCartList);
@@ -256,7 +279,23 @@ export default function ShoppingBasket() {
         <DescriptionComponent description="장바구니가 비어 있습니다."></DescriptionComponent>
       ) : (
         <S.table>
-          <S.caption>일반배송</S.caption>
+          <S.caption>
+            {/* <S.tablist> */}
+            <S.tabListText>
+              <S.boldText>일반배송</S.boldText>
+              <S.DeliveryContainer>
+                {totalCost < 30000 ? (
+                  <S.text2>{30000 - totalCost} 추가시 무료배송</S.text2>
+                ) : (
+                  <S.text2>무료배송</S.text2>
+                )}
+                <S.progressBarContainer>
+                  <S.progress width={80} />
+                </S.progressBarContainer>
+              </S.DeliveryContainer>
+            </S.tabListText>
+            {/* </S.tablist> */}
+          </S.caption>
           <S.thead>
             <S.tr>
               <S.th>상품명</S.th>
