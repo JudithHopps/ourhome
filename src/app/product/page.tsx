@@ -100,6 +100,11 @@ const S = {
     width: 100%;
     padding: 0px 3vw;
   `,
+  WebViewComponent: styled.div`
+    @media (max-width: 500px) {
+      display: none;
+    }
+  `,
 };
 
 export default function ProductList() {
@@ -202,6 +207,8 @@ export default function ProductList() {
           },
         ];
         updateCartList(newCartList);
+      } else {
+        alert("오류가 발생하였습니다.");
       }
     }
   };
@@ -214,7 +221,7 @@ export default function ProductList() {
         <S.prodFilter>
           <S.total>
             {"총 "}
-            <S.listCnt>10</S.listCnt>
+            <S.listCnt>20</S.listCnt>
             개의 상품이 있습니다.
           </S.total>
         </S.prodFilter>
@@ -239,35 +246,37 @@ export default function ProductList() {
         </S.productListContainer>
         <S.margin height={80} />
       </S.centerContainer>
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <S.centerContainer>
-            <S.modalHeader>
-              <S.boldText>장바구니</S.boldText>
-              <S.text onClick={() => setIsModalOpen(false)}>X</S.text>
-            </S.modalHeader>
-            <S.prodFilter></S.prodFilter>
-            <S.margin height={25}></S.margin>
-            <S.text>선택한 상품이 장바구니에 담겼습니다.</S.text>
-            <S.text2>장바구니로 이동하겠습니까?</S.text2>
-            <S.margin height={25}></S.margin>
-            <S.depthContainer>
-              <Link href="/mypage/shoppingBasket">
-                <ButtonComponent importance="low" width="12vw">
-                  장바구니 확인하기
+      <S.WebViewComponent>
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            <S.centerContainer>
+              <S.modalHeader>
+                <S.boldText>장바구니</S.boldText>
+                <S.text onClick={() => setIsModalOpen(false)}>X</S.text>
+              </S.modalHeader>
+              <S.prodFilter></S.prodFilter>
+              <S.margin height={25}></S.margin>
+              <S.text>선택한 상품이 장바구니에 담겼습니다.</S.text>
+              <S.text2>장바구니로 이동하겠습니까?</S.text2>
+              <S.margin height={25}></S.margin>
+              <S.depthContainer>
+                <Link href="/mypage/shoppingBasket">
+                  <ButtonComponent importance="low" width="12vw">
+                    장바구니 확인하기
+                  </ButtonComponent>
+                </Link>
+                <ButtonComponent
+                  importance="high"
+                  onClick={() => setIsModalOpen(false)}
+                  width="12vw"
+                >
+                  계속 쇼핑하기
                 </ButtonComponent>
-              </Link>
-              <ButtonComponent
-                importance="high"
-                onClick={() => setIsModalOpen(false)}
-                width="12vw"
-              >
-                계속 쇼핑하기
-              </ButtonComponent>
-            </S.depthContainer>
-          </S.centerContainer>
-        </Modal>
-      )}
+              </S.depthContainer>
+            </S.centerContainer>
+          </Modal>
+        )}
+      </S.WebViewComponent>
     </S.container>
   );
 }
