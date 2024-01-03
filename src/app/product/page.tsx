@@ -1,12 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import ItemComponent from "../../../component/ItemComponent";
+import ItemComponent from "../../../component/product/ItemComponent";
 import styled, { css } from "styled-components";
 import { productListType } from "type/productListType";
 import { fetchProductList } from "../lib/api/api";
 
 interface CartType {
   id: string;
+  itemTitle: string;
+  imgUrl: string;
+  price: number;
+  oriPrice: number;
+  sale: number;
   count: number;
 }
 
@@ -54,7 +59,8 @@ const S = {
     width: 100%;
   `,
 };
-function ProductList() {
+
+export default function ProductList() {
   const [productList, setProductList] = useState<productListType[] | null>(
     null,
   );
@@ -91,13 +97,22 @@ function ProductList() {
   };
 
   const createCartList = (id: string): void => {
-    const newCartList: CartType[] = [
-      {
-        id: id,
-        count: 1,
-      },
-    ];
-    updateCartList(newCartList);
+    const matchingProduct =
+      productList && productList.find((product) => product.id === id);
+    if (matchingProduct) {
+      const newCartList: CartType[] = [
+        {
+          id: id,
+          itemTitle: matchingProduct.itemTitle,
+          imgUrl: matchingProduct?.imgUrl,
+          price: matchingProduct?.price,
+          oriPrice: matchingProduct?.price,
+          sale: matchingProduct?.sale,
+          count: 1,
+        },
+      ];
+      updateCartList(newCartList);
+    }
   };
 
   const saveItem = (id: string): void => {
@@ -112,14 +127,23 @@ function ProductList() {
       });
       updateCartList(newCartList);
     } else {
-      const newCartList = [
-        ...cartList,
-        {
-          id: id,
-          count: 1,
-        },
-      ];
-      updateCartList(newCartList);
+      const matchingProduct =
+        productList && productList.find((product) => product.id === id);
+      if (matchingProduct) {
+        const newCartList: CartType[] = [
+          ...cartList,
+          {
+            id: id,
+            itemTitle: matchingProduct.itemTitle,
+            imgUrl: matchingProduct.imgUrl,
+            price: matchingProduct.price,
+            oriPrice: matchingProduct.price,
+            sale: matchingProduct.sale,
+            count: 1,
+          },
+        ];
+        updateCartList(newCartList);
+      }
     }
   };
 
@@ -162,5 +186,3 @@ function ProductList() {
     </S.container>
   );
 }
-
-export default ProductList;
