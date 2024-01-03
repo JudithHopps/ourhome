@@ -22,7 +22,7 @@ const S = {
     margin: 0px 20px;
   `,
   title: styled.h1`
-    font-size: 1.8rem;
+    font-size: 1.7vw;
     margin: 70px 0 7px 0;
   `,
   pageNav: styled.p`
@@ -91,14 +91,14 @@ const S = {
     }
   `,
   Price: styled.span`
-    font-size: 1rem;
+    font-size: 1.8vw;
     line-height: 1;
     font-weight: 600;
   `,
   OriPrice: styled.del`
     margin-top: 8px;
     color: #666;
-    font-size: 0.9rem;
+    font-size: 1.5vw;
     font-weight: 500;
     line-height: 1;
     text-decoration: line-through;
@@ -177,26 +177,31 @@ const S = {
     text-align: center;
     border-bottom: 0;
     padding: 20px;
+    flex-wrap: nowrap;
   `,
   text: styled.span`
     margin-right: 10px;
     font-weight: 400;
+    font-size: 1.6vw;
+    flex-wrap: nowrap;
   `,
   boldText: styled.span`
-    font-size: 22px;
+    font-size: 3vw;
     font-weight: 600;
-    width: 100px;
+    width: 13vw;
+    flex-shrink: 0;
     text-align: end;
+    flex-wrap: nowrap;
   `,
   text2: styled.span`
     color: #888;
-    font-size: 13px;
+    font-size: 1vw;
     font-weight: 400;
     padding-left: 3px;
   `,
   symbol: styled.span`
     padding: 0px 30px;
-    font-size: 27px;
+    font-size: 2rem;
     color: #b5b5b5;
   `,
   tablist: styled.div`
